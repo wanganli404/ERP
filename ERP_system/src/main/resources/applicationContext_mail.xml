@@ -15,7 +15,7 @@
         <!-- 帐号 -->
         <property name="username" value="3464914951@qq.com"/>
         <!-- 密码 -->
-        <property name="password" value="metrsnxgaircdbad"/>
+        <property name="password" value=""/>
         <!-- mail的配置 -->
         <property name="javaMailProperties">
             <props>
