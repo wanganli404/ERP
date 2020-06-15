@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hnun.erp.mapper.StoreMapper">
+  <resultMap id="BaseResultMap" type="com.hnun.erp.bean.Store">
+    <id column="UUID" jdbcType="INTEGER" property="uuid" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="EMPUUID" jdbcType="INTEGER" property="empuuid" />
+     <result column="managerName" jdbcType="VARCHAR" property="managerName" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    UUID, NAME, EMPUUID
+  </sql>
+  <select id="selectByExample" parameterType="com.hnun.erp.bean.StoreExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+   store.*,emp.name as managerName
+    from store left join emp on store.empuuid=emp.uuid
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from store
+    where UUID = #{uuid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from store
+    where UUID = #{uuid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hnun.erp.bean.StoreExample">
+    delete from store
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hnun.erp.bean.Store">
+    insert into store (UUID, NAME, EMPUUID
+      )
+    values (#{uuid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{empuuid,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hnun.erp.bean.Store">
+    insert into store
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uuid != null">
+        UUID,
+      </if>
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="empuuid != null">
+        EMPUUID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uuid != null">
+        #{uuid,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="empuuid != null">
+        #{empuuid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hnun.erp.bean.StoreExample" resultType="java.lang.Long">
+    select count(*) from store
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update store
+    <set>
+      <if test="record.uuid != null">
+        UUID = #{record.uuid,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null">
+        NAME = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.empuuid != null">
+        EMPUUID = #{record.empuuid,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update store
+    set UUID = #{record.uuid,jdbcType=INTEGER},
+      NAME = #{record.name,jdbcType=VARCHAR},
+      EMPUUID = #{record.empuuid,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hnun.erp.bean.Store">
+    update store
+    <set>
+      <if test="name != null">
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="empuuid != null">
+        EMPUUID = #{empuuid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where UUID = #{uuid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hnun.erp.bean.Store">
+    update store
+    set NAME = #{name,jdbcType=VARCHAR},
+      EMPUUID = #{empuuid,jdbcType=INTEGER}
+    where UUID = #{uuid,jdbcType=INTEGER}
+  </update>
+  
+   <select id="getListByPage" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+    select store.*,emp.name as managerName
+   
+    from store left join emp on store.empuuid=emp.uuid
+   <where>    
+            <if test="t.name != null and t.name !=''">     
+                and store.name = #{t.name}     
+            </if>    
+            <if test="t.empuuid != null and t.empuuid != ''">     
+                and store.empuuid= #{t.empuuid}     
+            </if>           
+    </where>    
+    ORDER BY UUID asc
+    <if test="_parameter != null">
+     LIMIT ${(page.page-1)*page.rows},${page.rows}; 
+    </if>
+  </select>
+
+
+	<select id="findList" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from store
+	</select>
+  
+  
+  
+  <select id="count" parameterType="java.lang.Long"  resultType="java.lang.Long">
+    select count(*) from store
+  </select>
+  
+  
+  
+  
+  
+  
+  
+  
+</mapper>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+<generatorConfiguration>
+
+	<context id="DB2Tables" targetRuntime="MyBatis3">
+		<commentGenerator>
+			<property name="suppressAllComments" value="true" />
+		</commentGenerator>
+		<!-- 配置数据库连接 -->
+		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
+			connectionURL="jdbc:mysql://localhost:3306/stuss?serverTimezone=UTC&amp;useUnicode=true&amp;characterEncoding=utf-8"
+			userId="root"
+			password="root">
+			<property name="useInformationSchema" value="true"/>
+		</jdbcConnection>
+
+		<javaTypeResolver>
+			<property name="forceBigDecimals" value="false" />
+		</javaTypeResolver>
+
+		<!-- 指定javaBean生成的位置 -->
+		<javaModelGenerator targetPackage="com.hnun.erp.bean"
+			targetProject=".\src\main\java">
+			<property name="enableSubPackages" value="true" />
+			<property name="trimStrings" value="true" />
+		</javaModelGenerator>
+
+		<!--指定sql映射文件生成的位置 -->
+		<sqlMapGenerator targetPackage="mapper" targetProject=".\src\main\resources">
+			<property name="enableSubPackages" value="true" />
+		</sqlMapGenerator>
+
+		<!-- 指定dao接口生成的位置，mapper接口 -->
+		<javaClientGenerator type="XMLMAPPER"
+			targetPackage="com.hnun.erp.dao" targetProject=".\src\main\java">
+			<property name="enableSubPackages" value="true" />
+		</javaClientGenerator>
+		
+		<!-- table指定每个表的生成策略 -->
+		<table tableName="dep" domainObjectName="Dep"></table>
+		<table tableName="emp" domainObjectName="Emp"></table>
+		<table tableName="goods" domainObjectName="Goods"></table>
+		<table tableName="goodstype" domainObjectName="Goodstype"></table>
+		<table tableName="menu" domainObjectName="Menu"></table>
+		<table tableName="orderdetail" domainObjectName="Orderdetail"></table>
+		<table tableName="orders" domainObjectName="Orders"></table>
+		<table tableName="role" domainObjectName="Role"></table>
+		<table tableName="store" domainObjectName="Store"></table>
+		<table tableName="storedetail" domainObjectName="Storedetail"></table>
+		<table tableName="supplier" domainObjectName="Supplier"></table>
+		
+	</context>
+</generatorConfiguration>

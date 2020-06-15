@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hnun.erp.mapper.DepMapper">
+  <resultMap id="BaseResultMap" type="com.hnun.erp.bean.Dep">
+    <id column="UUID" jdbcType="INTEGER" property="uuid" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="TELE" jdbcType="VARCHAR" property="tele" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    UUID, NAME, TELE
+  </sql>
+  <select id="selectByExample" parameterType="com.hnun.erp.bean.DepExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from dep
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from dep
+    where UUID = #{uuid,jdbcType=INTEGER}
+  </select>
+  
+   <select id="getListByPage" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from dep
+   <where>    
+            <if test="t.name != null and t.name !=''">     
+                and dep.name = #{t.name}     
+            </if>    
+            <if test="t.tele != null and t.tele != ''">     
+                and dep.tele = #{t.tele}     
+            </if>           
+    </where>    
+    ORDER BY UUID asc
+    <if test="page != null">
+     LIMIT ${(page.page-1)*page.rows},${page.rows}; 
+    </if>
+  </select>
+  
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from dep
+    where UUID = #{uuid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hnun.erp.bean.DepExample">
+    delete from dep
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hnun.erp.bean.Dep">
+    insert into dep (UUID, NAME, TELE
+      )
+    values (#{uuid,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, #{tele,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hnun.erp.bean.Dep">
+    insert into dep
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uuid != null">
+        UUID,
+      </if>
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="tele != null">
+        TELE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uuid != null">
+        #{uuid,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="tele != null">
+        #{tele,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hnun.erp.bean.DepExample" resultType="java.lang.Long">
+    select count(*) from dep
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update dep
+    <set>
+      <if test="record.uuid != null">
+        UUID = #{record.uuid,jdbcType=INTEGER},
+      </if>
+      <if test="record.name != null">
+        NAME = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tele != null">
+        TELE = #{record.tele,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update dep
+    set UUID = #{record.uuid,jdbcType=INTEGER},
+      NAME = #{record.name,jdbcType=VARCHAR},
+      TELE = #{record.tele,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hnun.erp.bean.Dep">
+    update dep
+    <set>
+      <if test="name != null">
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="tele != null">
+        TELE = #{tele,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where UUID = #{uuid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hnun.erp.bean.Dep">
+    update dep
+    set NAME = #{name,jdbcType=VARCHAR},
+      TELE = #{tele,jdbcType=VARCHAR}
+    where UUID = #{uuid,jdbcType=INTEGER}
+  </update>
+  
+  
+  <select id="findList"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from dep
+  </select>
+  
+  <select id="count" parameterType="java.lang.Long"  resultType="java.lang.Long">
+    select count(*) from dep
+  </select>
+  
+</mapper>

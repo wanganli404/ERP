@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ERP管理系统</title>
+
+    <link type="text/css" rel="stylesheet" href="js/jquery-easyui-1.5.3/themes/default/easyui.css"/>
+    <link type="text/css" rel="stylesheet" href="js/jquery-easyui-1.5.3/themes/icon.css"/>
+    <link type="text/css" rel="stylesheet" href="css/main.css">
+   <!--  <link rel="stylesheet" type="text/css" href="adminjs/themes/default/easyui.css" />
+    <link rel="stylesheet" type="text/css" href="adminjs/themes/icon.css" /> -->
+   <!--  <script type="text/javascript" src="adminjs/jquery-1.7.2.min.js"></script>
+    <script type="text/javascript" src="adminjs/jquery.easyui.1.2.6.min.js"></script> -->
+	
+	<!-- 引入自己抽取的css样式 -->
+	<link rel="stylesheet" type="text/css" href="css/mycss.css">
+</head>
+<body>
+
+<div class="easyui-layout" id="mainBox">
+    <div data-options="region:'north',split:true" style="height: 80px" class="mainTop">
+        <div class="topLogin"><img src="img/logoImg.png"/> <div class="topLongRight">@nbsp ERP管理系统</div></div>
+        <div class="topText">
+            <a href="javascript:void(0)" class="textActive" target="frameName">
+                <p style="margin-top: 10px"><img src="img/home.png"/> </p>
+                <p style="margin-top: 5px">系统首页</p>
+            </a>
+            <a href="javascript:void(0)" target="frameName" >
+            <p style="margin-top: 10px"><img src="img/computer.png"/> </p>
+            <p style="margin-top: 5px">流程图</p>
+        </a>
+            <a href="javascript:void(0)"  target="frameName">
+                <p style="margin-top: 10px"><img src="img/ogrn.png"/> </p>
+                <p style="margin-top: 5px">统计分析</p>
+            </a>
+            <a href="javascript:void(0)" target="frameName">
+                <p style="margin-top: 10px"><img src="img/action.png"/> </p>
+                <p style="margin-top: 5px">报表填写</p>
+            </a>
+        </div>
+       <!--   <div style="float:right; padding-right:20px;" 
+        class="head">
+       	欢迎: &nbsp;<strong><span id="username"></span></strong> &nbsp;&nbsp;
+       	您的角色为: &nbsp;<strong><span id="roles"></span></strong> &nbsp;&nbsp;
+       	当前时间为: <strong><span id="nowTime"></span></strong> &nbsp;&nbsp;
+        <a href="javascript:void(0)" style="text-decoration: none;" id="editpass">修改密码</a>&nbsp;&nbsp; 
+        <a href="javascript:void(0)" style="text-decoration: none;" id="loginOut">安全退出</a>&nbsp;&nbsp; 
+        </div> -->
+      	
+         <div href="javascript:void(0)" id="mb" class="easyui-menubutton topMean"
+           data-options="menu:'#user',iconCls:'icon-admin'">管理员帐号</div>
+           
+        <div id="user"  style="display:none">
+            <div data-options="iconCls:'icon-man'"><a href="javascript:void(0)" id="editpass">修改密码</a> </div>
+            <div data-options="iconCls:'icon-redo'"><a href="javascript:void(0) " id="loginOut">安全退出</a> </div>
+          
+
+        </div>
+        <div class="topMean">欢迎: &nbsp;<strong><span id="username"></span></strong> &nbsp;&nbsp;</div>
+       	<div class="topMean">您的角色为: &nbsp;<strong><span id="roles"></span></strong> &nbsp;&nbsp;</div>
+    </div>
+    <div data-options="region:'south',split:true" style="height:40px;" class="footStyle">
+        版本所有@2017-2018xxxxxxx有很责任公司
+    </div>
+    <div  data-options="region:'west',title:'功能菜单',split:true,iconCls:'icon-left01'" style="width:200px;">
+        <div id="nav"  class="easyui-accordion" >
+           
+          <!--   <div title="日程管理" data-options="iconCls:'icon-card'" class="mainPanle">
+                <p><i class="i_a i_low"></i><a href="dep.html" target="frameName">日程管理</a> </p>
+
+
+            </div>
+ -->
+
+        </div>
+
+
+    </div>
+    <div data-options="region:'center'" style="padding:5px;background:#eee;">
+        <div id="tabs" class="easyui-tabs"  fit="true" border="false" >
+  		</div>
+  </div>
+    </div>
+</div>
+<!-- <div id="myMes" style="display:none">
+
+<p><label class="diaLable">用户名：</label><input  class="easyui-validatebox TailInput" disabled="disabled" data-options="required:true,novalidate:true" ></p>
+   <p><label class="diaLable">登录名称：</label><input  class="easyui-validatebox TailInput" data-options="required:true" id="username"></p>
+    <p><label class="diaLable">用户密码：</label><input  type="password" value="123456" class="easyui-validatebox TailInput" data-options="required:true,"></p>
+    <p><label class="diaLable">用户角色：</label><input  class="easyui-validatebox TailInput" disabled="disabled" data-options="required:true,novalidate:true" value="管理员"></p>
+    <p><label class="diaLable">所属部门：</label><input  class="easyui-validatebox TailInput" disabled="disabled" data-options="required:true,novalidate:true" value="行政部门"></p>
+    <p><label class="diaLable areaLabel">描述：</label><textarea class="TailArea01" ></textarea></p>
+    <div class="forSubmint"> <a href="#" class="easyui-linkbutton"  iconCls="icon-save" >保存</a><a href="#" class="easyui-linkbutton"  iconCls="icon-redo" >重置</a> </div>
+</div> -->
+<div id="w" class="easyui-dialog">
+       <table cellpadding=3>
+           <tr>
+               <td>旧密码：</td>
+               <td><input id="txtOldPass" type="password" class="txt01" /></td>
+           </tr>
+           <tr>
+               <td>新密码：</td>
+               <td><input id="txtNewPass" type="password" class="txt01" /></td>
+           </tr>
+           <tr>
+               <td>确认密码：</td>
+               <td><input id="txtRePass" type="password" class="txt01" /></td>
+           </tr>
+       </table>
+	</div>
+
+<div id="mm" class="easyui-menu" style="width:150px;display:none" >
+		<div id="refresh">刷新</div>
+		<div class="menu-sep"></div>
+		<div id="close">关闭</div>
+		<div id="closeall">全部关闭</div>
+		<div id="closeother">除此之外全部关闭</div>
+		<div class="menu-sep"></div>
+		<div id="closeright">当前页右侧全部关闭</div>
+		<div id="closeleft">当前页左侧全部关闭</div>
+		<div class="menu-sep"></div>
+		<div id="exit">退出</div>
+	</div>
+
+<script src="js/jquery-easyui-1.5.3/jquery.min.js"></script>
+<script src="js/jquery-easyui-1.5.3/jquery.easyui.min.js"></script>
+<script src="js/jquery-easyui-1.5.3/locale/easyui-lang-zh_CN.js"></script>
+
+<script type="text/javascript" src='adminjs/index.js'> </script>
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hnun.erp.mapper.EmpMapper">
+  <resultMap id="BaseResultMap" type="com.hnun.erp.bean.Emp">
+    <id column="UUID" jdbcType="INTEGER" property="uuid" />
+    <result column="USERNAME" jdbcType="VARCHAR" property="username" />
+    <result column="PWD" jdbcType="VARCHAR" property="pwd" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="GENDER" jdbcType="INTEGER" property="gender" />
+    <result column="EMAIL" jdbcType="VARCHAR" property="email" />
+    <result column="TELE" jdbcType="VARCHAR" property="tele" />
+    <result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+    <result column="BIRTHDAY" jdbcType="DATE" property="birthday" />
+    <result column="DEPUUID" jdbcType="INTEGER" property="depuuid" />
+  </resultMap>
+  
+   <resultMap id="ResultMapWithRoles" type="com.hnun.erp.bean.Emp">
+    <result column="UUID" jdbcType="INTEGER" property="uuid" />
+    <result column="USERNAME" jdbcType="VARCHAR" property="username" />
+    <result column="PWD" jdbcType="VARCHAR" property="pwd" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="GENDER" jdbcType="INTEGER" property="gender" />
+    <result column="EMAIL" jdbcType="VARCHAR" property="email" />
+    <result column="TELE" jdbcType="VARCHAR" property="tele" />
+    <result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+    <result column="BIRTHDAY" jdbcType="DATE" property="birthday" />
+    <result column="DEPUUID" jdbcType="INTEGER" property="depuuid" />
+	<collection property="roles" ofType="com.hnun.erp.bean.Role">
+		<result column="ROLE_UUID" property="uuid" />
+		<result column="ROLE_NAME" property="name" />
+	</collection>
+  </resultMap>
+  
+  <resultMap id="ResultMapWithDep" type="com.hnun.erp.bean.Emp">
+    <result column="UUID" jdbcType="INTEGER" property="uuid" />
+    <result column="USERNAME" jdbcType="VARCHAR" property="username" />
+    <result column="PWD" jdbcType="VARCHAR" property="pwd" />
+    <result column="NAME" jdbcType="VARCHAR" property="name" />
+    <result column="GENDER" jdbcType="INTEGER" property="gender" />
+    <result column="EMAIL" jdbcType="VARCHAR" property="email" />
+    <result column="TELE" jdbcType="VARCHAR" property="tele" />
+    <result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+    <result column="BIRTHDAY" jdbcType="DATE" property="birthday" />
+    <result column="DEPUUID" jdbcType="INTEGER" property="depuuid" />
+	 <association property="dep" javaType="com.hnun.erp.bean.Dep">
+       <id column="depuuid" property="uuid"/>
+       <result column="depname" property="name"/>
+       <result column="deptele" property="tele"/>
+    </association>
+  </resultMap>
+  
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    UUID, USERNAME, PWD, NAME, GENDER, EMAIL, TELE, ADDRESS, BIRTHDAY, DEPUUID
+  </sql>
+  
+  <sql id="ALL_Column_List">
+    emp.*,role.NAME AS ROLE_NAME,ROLE.UUID AS ROLE_UUID
+  </sql>
+  
+   <sql id="WithDeptColumnList">
+    emp.*,dep.uuid as depuuid,dep.name as depname,dep.tele as deptele
+  </sql>
+  
+  <select id="selectByExample" parameterType="com.hnun.erp.bean.EmpExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from emp
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from emp
+    where UUID = #{uuid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from emp
+    where UUID = #{uuid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.hnun.erp.bean.EmpExample">
+    delete from emp
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.hnun.erp.bean.Emp">
+    insert into emp (UUID, USERNAME, PWD, 
+      NAME, GENDER, EMAIL, 
+      TELE, ADDRESS, BIRTHDAY, 
+      DEPUUID)
+    values (#{uuid,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{pwd,jdbcType=VARCHAR}, 
+      #{name,jdbcType=VARCHAR}, #{gender,jdbcType=INTEGER}, #{email,jdbcType=VARCHAR}, 
+      #{tele,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE}, 
+      #{depuuid,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hnun.erp.bean.Emp">
+    insert into emp
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uuid != null">
+        UUID,
+      </if>
+      <if test="username != null">
+        USERNAME,
+      </if>
+      <if test="pwd != null">
+        PWD,
+      </if>
+      <if test="name != null">
+        NAME,
+      </if>
+      <if test="gender != null">
+        GENDER,
+      </if>
+      <if test="email != null">
+        EMAIL,
+      </if>
+      <if test="tele != null">
+        TELE,
+      </if>
+      <if test="address != null">
+        ADDRESS,
+      </if>
+      <if test="birthday != null">
+        BIRTHDAY,
+      </if>
+      <if test="depuuid != null">
+        DEPUUID,
+      </if>
+     
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uuid != null">
+        #{uuid,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="pwd != null">
+        #{pwd,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        #{gender,jdbcType=INTEGER},
+      </if>
+      <if test="email != null">
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="tele != null">
+        #{tele,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null">
+        #{birthday,jdbcType=DATE},
+      </if>
+      <if test="depuuid != null">
+        #{depuuid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.hnun.erp.bean.EmpExample" resultType="java.lang.Long">
+    select count(*) from emp
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update emp
+    <set>
+      <if test="record.uuid != null">
+        UUID = #{record.uuid,jdbcType=INTEGER},
+      </if>
+      <if test="record.username != null">
+        USERNAME = #{record.username,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pwd != null">
+        PWD = #{record.pwd,jdbcType=VARCHAR},
+      </if>
+      <if test="record.name != null">
+        NAME = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.gender != null">
+        GENDER = #{record.gender,jdbcType=INTEGER},
+      </if>
+      <if test="record.email != null">
+        EMAIL = #{record.email,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tele != null">
+        TELE = #{record.tele,jdbcType=VARCHAR},
+      </if>
+      <if test="record.address != null">
+        ADDRESS = #{record.address,jdbcType=VARCHAR},
+      </if>
+      <if test="record.birthday != null">
+        BIRTHDAY = #{record.birthday,jdbcType=DATE},
+      </if>
+      <if test="record.depuuid != null">
+        DEPUUID = #{record.depuuid,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update emp
+    set UUID = #{record.uuid,jdbcType=INTEGER},
+      USERNAME = #{record.username,jdbcType=VARCHAR},
+      PWD = #{record.pwd,jdbcType=VARCHAR},
+      NAME = #{record.name,jdbcType=VARCHAR},
+      GENDER = #{record.gender,jdbcType=INTEGER},
+      EMAIL = #{record.email,jdbcType=VARCHAR},
+      TELE = #{record.tele,jdbcType=VARCHAR},
+      ADDRESS = #{record.address,jdbcType=VARCHAR},
+      BIRTHDAY = #{record.birthday,jdbcType=DATE},
+      DEPUUID = #{record.depuuid,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hnun.erp.bean.Emp">
+    update emp
+    <set>
+      <if test="username != null">
+        USERNAME = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="pwd != null">
+        PWD = #{pwd,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null">
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null">
+        GENDER = #{gender,jdbcType=INTEGER},
+      </if>
+      <if test="email != null">
+        EMAIL = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="tele != null">
+        TELE = #{tele,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        ADDRESS = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="birthday != null">
+        BIRTHDAY = #{birthday,jdbcType=DATE},
+      </if>
+      <if test="depuuid != null">
+        DEPUUID = #{depuuid,jdbcType=INTEGER},
+      </if>
+      
+    </set>
+    where emp.UUID = #{uuid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hnun.erp.bean.Emp">
+    update emp
+    set USERNAME = #{username,jdbcType=VARCHAR},
+      PWD = #{pwd,jdbcType=VARCHAR},
+      NAME = #{name,jdbcType=VARCHAR},
+      GENDER = #{gender,jdbcType=INTEGER},
+      EMAIL = #{email,jdbcType=VARCHAR},
+      TELE = #{tele,jdbcType=VARCHAR},
+      ADDRESS = #{address,jdbcType=VARCHAR},
+      BIRTHDAY = #{birthday,jdbcType=DATE},
+      DEPUUID = #{depuuid,jdbcType=INTEGER}
+    where UUID = #{uuid,jdbcType=INTEGER}
+  </update>
+
+ 
+  
+  
+  <select id="selectByExampleWithRoles" parameterType="java.lang.Long" resultMap="ResultMapWithRoles">
+    select
+    
+    <include refid="ALL_Column_List" />
+    from emp left join emp_role on emp.UUID=emp_role.EMPUUID left join role on emp_role.ROLEUUID=role.UUID
+   
+    where emp.uuid=#{uuid}
+  </select>
+  
+   <select id="selectByExampleWithDept" resultMap="ResultMapWithDep">
+  
+        select 
+	    <if test="distinct">
+	      distinct
+	    </if>
+	    <include refid="WithDeptColumnList" />
+		FROM emp
+		left join dep on emp.depuuid=dep.uuid
+	    <if test="_parameter != null">
+	      <include refid="Example_Where_Clause" />
+	    </if>
+	    <if test="orderByClause != null">
+	      order by ${orderByClause}
+	    </if>
+  </select> 
+  
+   <select id="getListByPage" parameterType="java.util.HashMap" resultMap="ResultMapWithDep">
+    select 
+     <include refid="WithDeptColumnList" />
+    from emp
+    left join dep on emp.depuuid=dep.uuid
+    <where>    
+            <if test="t.username != null and t.username !=''">     
+                and emp.username = #{t.username}     
+            </if>    
+            <if test="t.name != null and t.name != ''">     
+                and emp.name = #{t.name}     
+            </if>    
+            <if test="t.dep != null and t.dep.uuid!=null">     
+                and emp.depuuid = #{t.dep.uuid}     
+            </if>    
+            <if test="t.email != null and t.email !=''">     
+                and emp.email = #{t.email}     
+            </if>    
+             <if test="t.gender != null and t.gender != ''">     
+                and emp.gender = #{t.gender}     
+            </if>    
+              <if test="t.tele != null and t.tele != ''">     
+                and emp.tele = #{t.tele}     
+            </if> 
+             <if test="t.address != null and t.address != ''">     
+                and emp.address = #{t.address}     
+            </if>       
+            <if test="q!=null and q.startbirthday != null ">     
+                and emp.birthday &gt;= #{q.startbirthday}     
+            </if>    
+            <if test="q!=null and q.endbirthday != null ">     
+                and emp.birthday &lt;= #{q.endbirthday}     
+            </if>    
+    </where>    
+    ORDER BY UUID asc
+    <if test="page!= null">
+     LIMIT ${(page.page-1)*page.rows},${page.rows}; 
+    </if>
+  </select>
+  
+   <select id="findList"  resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from emp
+  </select>
+  
+  <select id="count" parameterType="java.lang.Long" resultType="java.lang.Long">
+    select count(*) from emp
+  </select>
+  
+   <update id="updateEmpRoles" parameterType="com.hnun.erp.bean.Emp">
+    delete from emp_role where empuuid=#{uuid};
+    <foreach collection="roles" index="index" item="role" >
+     insert into emp_role values(null,#{uuid},#{role.uuid});
+    </foreach>    
+   </update>
+  
+</mapper>

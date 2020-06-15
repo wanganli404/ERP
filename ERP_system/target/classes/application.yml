@@ -1,0 +1,40 @@
+
+
+#服务配置
+server:
+  port: 8080
+#spring配置
+spring:
+  #1.应用配置
+  application:
+    name: erp-system #指定服务名
+  #2.数据库连接池
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:8066/TESTDB?useUnicode=true&characterEncoding=utf8&useCursorFetch=true&defaultFetchSize=500&allowMultiQueries=true&rewriteBatchedStatement
+    username: root
+    password: 123456
+  devtools:
+    restart:
+      enabled: true
+      exclude: WEB-INF/**
+  #3.JPA
+  #
+
+  redis:
+    host: 127.0.0.1
+    port: 6379
+
+logging:
+  level:
+    com.hnun.erp.mapper: debug
+  #file: C:\Users\PC\Desktop\1.txt
+mybatis:
+  type-aliases-package: com.hnun.erp.bean.*
+  mapper-locations:
+   classpath*:/mapper/*.xml
+  config-location: classpath:mybatis.xml
+mybatis-plus:
+  mapper-locations:
+   classpath*:/mapper/*.xml
+  config-location: classpath:mybatis.xml
